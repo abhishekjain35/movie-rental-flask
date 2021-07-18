@@ -7,7 +7,7 @@ import os
 
 
 AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
-ALGORITHMS = os.environ['ALGORITHMS']
+ALGORITHMS = ['RS256']
 API_AUDIENCE = os.environ['API_AUDIENCE']
 
 ## AuthError Exception

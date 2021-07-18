@@ -5,7 +5,6 @@ export ALGORITHMS=['RS256']
 export API_AUDIENCE='Movie Rental API'
 export CLIENT_ID='lJY289KKbUTscKCL3mmPSy0r6vb6LaO8'
 export DATABASE_URL='postgres://localhost:5432/rentalapi'
-export EXCITED=true
 export FLASK_APP=app.py
 export FLASK_ENV=development
 
