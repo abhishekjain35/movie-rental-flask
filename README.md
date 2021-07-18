@@ -40,15 +40,13 @@ To setup tests follow these steps -
 - run `source setup.sh` to set configs.
 - finally run the tests by `python3 test_app.py`
 
-> NOTE: Repeat above steps everytime you run tests. Else two of the testcase will fail including `test_get_paginated_questions` and `test_delete_ques_by_id`. Because the delete testcase removes a question if you run it next time without seeding database it will fail.
+> NOTE: Repeat above steps everytime you run tests.
 
 # API reference
 
 ## Getting Started
 
-### Base URL
-
-Currently, this app is not hosted anywhere. So, it can only run in local server. The base URL for local server is `http://localhost:5000/`.
+### Base URL : `https://movie-rentalapi.herokuapp.com/`
 
 ### API keys
 
@@ -76,7 +74,7 @@ Other error response includes -
 
 ## Request Endpoints
 
-## Resource: Category
+> NOTE: `/` endpoint is only for testing.
 
 ### GET `/movies`
 
@@ -86,7 +84,7 @@ Other error response includes -
 
 - Returns: An JSON object with - `success`: True or False, movies: contains all movies.
 
-- Response Example - (`curl 'http://localhost:5000/movies'`)
+- Response Example - (`curl 'https://movie-rentalapi.herokuapp.com/movies'`)
 
 ```python
 {
@@ -109,7 +107,7 @@ Other error response includes -
 
 - Returns: An JSON object with - `success`, `movies`: list of dictionaries of movies.
 
-- Response Example - (`curl 'http://localhost:5000/rented-movies'`)
+- Response Example - (`curl 'https://movie-rentalapi.herokuapp.com/rented-movies'`)
 
 ```python
 {
@@ -147,7 +145,7 @@ Other error response includes -
 
 - Returns: An JSON object with keys `success`, `movie`.
 
-- Response Example - (`curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <admin_token>" -d '{"movie_name": "Iron Man", "price": 100' 'http://localhost:5000/create-movie'`)
+- Response Example - (`curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <admin_token>" -d '{"movie_name": "Iron Man", "price": 100' 'https://movie-rentalapi.herokuapp.com/create-movie'`)
 
 ```python
 {
@@ -168,7 +166,7 @@ Other error response includes -
 
 - Returns: An JSON object with - `success` and `rented_movie` keys.
 
-- Response Example - (`curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <token>" -d '{"movie_id": 1, "days": 5}' 'http://localhost:5000/rent-movie'`)
+- Response Example - (`curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <token>" -d '{"movie_id": 1, "days": 5}' 'https://movie-rentalapi.herokuapp.com/rent-movie'`)
 
 ```python
 {
@@ -194,7 +192,7 @@ Other error response includes -
 
 - Returns: An JSON object with keys `success` and `movie` object.
 
-- Response Example - (`curl -X PATCH -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"movie_name": "Avengers Endgame", "price": 400}' 'http://localhost:5000/movie/4'`)
+- Response Example - (`curl -X PATCH -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"movie_name": "Avengers Endgame", "price": 400}' 'https://movie-rentalapi.herokuapp.com/movie/4'`)
 
 ```python
 {
@@ -215,7 +213,7 @@ Other error response includes -
 
 - Returns: An JSON object with keys `success` and `id` of the movie
 
-- Response Example - (`curl -X DELETE -H "Authorization: Bearer <token>" 'http://localhost:5000/movie/8'`):
+- Response Example - (`curl -X DELETE -H "Authorization: Bearer <token>" 'https://movie-rentalapi.herokuapp.com/movie/8'`):
 
 ```python
 {
@@ -226,8 +224,8 @@ Other error response includes -
 
 ## Deployment
 
-Currently, this project is not deployed anywhere. It is still in development phase.
+This project is deployed on heroku: `https://movie-rentalapi.herokuapp.com/`
 
 ## Authors
 
-Abhishek Jain (developing and writing test for API), Udacity(Initial Setup in frontend and backend)
+Abhishek Jain
