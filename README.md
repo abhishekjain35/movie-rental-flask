@@ -42,6 +42,16 @@ To setup tests follow these steps -
 
 > NOTE: Repeat above steps everytime you run tests.
 
+## Roles and Permissions:
+
+* An unregistered user has no role or permission. But they should be able to get all movies by hitting `/movies` and get rented movies by hitting `/rented-movies` endpoints.
+
+* An registered user has `User` role with `rent:movie` role. They can use unregistered user's endpoints plus they can rent any movie.
+
+* An admin has `Admin` role with permissions - `create:movie`, `update:movie`, `delete:movie`, `rent:movie`. So, basically an admin can perform Every operation in the app. Admin can perform CRUD operations on movies, get and rent movies.
+
+> NOTE: user and admin tokens are provided in `setup.sh` file.
+
 # API reference
 
 ## Getting Started

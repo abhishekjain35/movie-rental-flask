@@ -8,6 +8,9 @@ database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
 
+'''
+Setup database and initialize it.
+'''
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -15,6 +18,7 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
+# Movies table with self methods
 class Movies(db.Model):  
   __tablename__ = 'movies'
 
@@ -44,6 +48,7 @@ class Movies(db.Model):
       'price': self.price,
     }
 
+# Rents table with self methods and has relationships with movies.
 class Rents(db.Model):
   __tablename__ = 'rents'
   id = db.Column(db.Integer, primary_key=True)

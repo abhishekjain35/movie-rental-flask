@@ -1,5 +1,5 @@
 import os
-from flask import Flask, json, request, abort, jsonify
+from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, Movies, Rents
@@ -16,12 +16,14 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Headers', 'GET, POST, PATCH, DELETE, OPTION')
         return response
 
+    # For checking health of the application.
     @app.route('/', methods=["GET"])
     def check_app():
         return jsonify({
             "status": "App is working fine."
         })
 
+    # Get all movies no authorization required.
     @app.route("/movies", methods=['GET'])
     def get_all_movies():
         movies = Movies.query.all()
@@ -34,20 +36,26 @@ def create_app(test_config=None):
             "movies": formatted_movies
         })
 
+    # Create a movie, requires 'create:movie' permission which only an admin have.
     @app.route("/create-movie", methods=["POST"])
     @requires_auth('create:movie')
     def create_movie(userData):
-        data = request.get_json()
+        try:
+            data = request.get_json()
 
-        if 'movie_name' and 'price' not in data:
+            if 'movie_name' and 'price' not in data:
+                abort(422)
+            movie = Movies(data['movie_name'], data['price'])
+            movie.insert()
+            return jsonify({
+                'success': True,
+                'movie': movie.format()
+            })
+        
+        except:
             abort(422)
-        movie = Movies(data['movie_name'], data['price'])
-        movie.insert()
-        return jsonify({
-            'success': True,
-            'movie': movie.format()
-        })
 
+    # Updating a movie, requires 'update:movie' permission which only an admin have.
     @app.route("/movie/<int:id>", methods=["PATCH"])
     @requires_auth('update:movie')
     def update_movie(userData,id):
@@ -71,6 +79,7 @@ def create_app(test_config=None):
             'movie': movie.format()
         })
 
+    # Deleting a movie, requires 'delete:movie' permission which only an admin have.
     @app.route('/movie/<int:id>', methods=['DELETE'])
     @requires_auth('delete:movie')
     def delete_movie(userData, id):
@@ -85,6 +94,7 @@ def create_app(test_config=None):
             'id': id
         })
 
+    # Get all rented movies, no authentication required.
     @app.route('/rented-movies', methods=['GET'])
     def get_rented_movies():
         try:
@@ -99,6 +109,7 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    # Rent a movie, requires 'rent:movie' permission which an authenticated user and admin has.
     @app.route('/rent-movie', methods=["POST"])
     @requires_auth('rent:movie')
     def rent_a_movie(userData):
@@ -120,6 +131,7 @@ def create_app(test_config=None):
         except:
             abort(404)
 
+    # Handles not found error.
     @app.errorhandler(404)
     def handler_not_found(error):
         return jsonify({
@@ -128,6 +140,7 @@ def create_app(test_config=None):
             "message": "resource not found"
         }), 404
 
+    # Handles unprocessable error.
     @app.errorhandler(422)
     def handler_unprocessable(error):
         return jsonify({
@@ -136,6 +149,7 @@ def create_app(test_config=None):
             "message": "unprocessable"
         }), 422
 
+    # Handles bad request error.
     @app.errorhandler(400)
     def handler_bad_request(error):
         return jsonify({
@@ -144,6 +158,7 @@ def create_app(test_config=None):
             "message": "bad request"
         }), 400
     
+    # Handles illegal requests, like sending post request in endpoint which only accepts get requests.
     @app.errorhandler(405)
     def handler_bad_request(error):
         return jsonify({
@@ -152,6 +167,7 @@ def create_app(test_config=None):
             "message": "method not allowed"
         }), 405
 
+    # Handles AuthError which are defined in auth.py file.
     @app.errorhandler(AuthError)
     def handle_auth_error(err):
         jsonRes = jsonify(err.error)
